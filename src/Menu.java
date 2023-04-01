@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Menu {
     Scanner input = new Scanner(System.in);
     Passengers activity = new Passengers();
-    Admin admininformation = new Admin();
+    Admin admininformation = new Admin("negar","negar1383");
     Passengers [] information = new Passengers[100];
     int j=0;
 
@@ -41,17 +41,21 @@ public class Menu {
     }
     public void signup(){
         System.out.println("username:");
-        String password = input.next();
-        System.out.println("pass:");
         String username = input.next();
+        System.out.println("pass:");
+        String password = input.next();
 
         information[j++] = new Passengers(username,password);
     }
     public void signin(){
         System.out.println("username:");
-        String password = input.next();
-        System.out.println("pass:");
         String username = input.next();
+        System.out.println("pass:");
+        String password = input.next();
+
+        if (Objects.equals(username,"negar") && Objects.equals(password,"negar1383"))
+                    admininformation.adminMenu();
+
         for (int k=0; k<j; k++)
             if (Objects.equals(information[k].getUsername(),username) && Objects.equals(information[k].getPassword(),password))
                 activity.passengersMenu();

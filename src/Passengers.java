@@ -38,7 +38,7 @@ public class Passengers {
     }
 
     public int printMenu(){
-        System.out.println("\t\tPASSENGER MENU OPTIONS\t\t");
+        System.out.println("\t\t\t\t<<PASSENGER MENU OPTIONS>>\t\t");
         System.out.println("<1> Change password");
         System.out.println("<2> Search flight tickets");
         System.out.println("<3> Booking ticket");
@@ -51,6 +51,7 @@ public class Passengers {
         return command;
     }
     public void passengersMenu(){
+
         int command = printMenu();
 
         while (command !=0) {
@@ -58,16 +59,22 @@ public class Passengers {
             switch (command) {
                 case 1:
                     System.out.println("change");
+                    break;
                 case 2:
                     System.out.println("search");
+                    break;
                 case 3:
                     System.out.println("book");
+                    break;
                 case 4:
                     System.out.println("cancel");
+                    break;
                 case 5:
                     System.out.println("ticket");
+                    break;
                 case 6:
                     System.out.println("charge");
+                    break;
                 default:
                     break;
             }

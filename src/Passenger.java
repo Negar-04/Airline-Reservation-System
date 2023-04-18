@@ -1,7 +1,7 @@
-public class Admin {
+public class Passenger {
     private String username;
     private String password;
-
+    private String credit;
     public String getUsername() {
         return username;
     }
@@ -18,8 +18,14 @@ public class Admin {
         this.password = password;
     }
 
-    public Admin(String username, String password) {
-        this.username = "negar";
-        this.password = "negar1383";
+    public String getCredit() {return credit;}
+
+    public void setCredit(String credit) {this.credit = credit;}
+    public Passenger(String username, String password, String credit) {
+        this.username = username;
+        this.password = password;
+        this.credit = credit;
     }
 }
+
+

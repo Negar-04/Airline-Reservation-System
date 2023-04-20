@@ -1,15 +1,10 @@
 public class Passenger {
-    private String username;
+    private final String username;
     private String password;
     private String credit;
     public String getUsername() {
         return username;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }

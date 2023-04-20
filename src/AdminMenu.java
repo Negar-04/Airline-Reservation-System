@@ -1,7 +1,6 @@
 import java.util.Objects;
 import java.util.Scanner;
-
-public class Adminmenu {
+public class AdminMenu {
     Scanner input = new Scanner(System.in);
     public void printAdminMenu(){
         System.out.println("\t\t\t\t\t\t<<Admin Menu OPTIONS>>\t\t");
@@ -41,47 +40,62 @@ public class Adminmenu {
                     i = -1;
                 }
             }
-            boolean test2 = true;
-            while (test2) {
+            boolean bool = true;
+            while (bool) {
                 System.out.println("please enter origin :  <enter the first letter in upper case>");
                 origin = input.next();
-                if (!database.isNumeric(origin))
-                    System.out.println("Not valid !");
+                if (database.checkLetters(origin))
+                    bool = false;
                 else
-                    break;
+                    System.out.println("Not valid !");
             }
-            boolean bool2 = true;
+            bool = true;
             String destination = null;
-
-            while (bool2) {
+            while (bool) {
                 System.out.println("please enter destination :   <enter the first letter in upper case>");
                 destination = input.next();
-                if (!Objects.equals(destination, origin ) && database.isNumeric(destination)) {
-                    bool2 = false;
-                } else
+                if (!Objects.equals(destination, origin) && database.checkLetters(destination))
+                    bool = false;
+                else
                     System.out.println("Not valid !");
             }
-            System.out.println("please enter date :");
-            String date = input.next();
-            System.out.println("please enter time :");
-            String time = input.next();
-            boolean bool1 = true;
+            bool = true;
+            String date = null;
+            while (bool) {
+                System.out.println("please enter date :    <enter zero wherever required>");
+                date = input.next();
+                if (database.checkDate(date))
+                    bool = false;
+                else
+                    System.out.println("Not valid !");
+            }
+            bool = true;
+            String time = null;
+            while (bool) {
+                System.out.println("please enter time :    <enter zero wherever required>");
+                time = input.next();
+                if (database.checkTime(time))
+                    bool = false;
+                else
+                    System.out.println("Not valid !");
+            }
+            bool = true;
             String price = null;
-            while (bool1) {
+            while (bool) {
                 System.out.println("please enter price :");
                 price = input.next();
                 if (database.isNumeric(price) && Integer.parseInt(price) > 0)
-                    bool1 = false;
+                    bool = false;
                 else
                     System.out.println("Not valid !");
             }
-            boolean test = true;
+            bool = true;
             String seat = null;
-            while (test) {
+            while (bool) {
                 System.out.println("please enter seats :");
                 seat = input.next();
                 if (database.isNumeric(seat) && Integer.parseInt(seat) > 0)
-                    test = false;
+                    bool = false;
                 else
                     System.out.println("Not valid !");
             }
@@ -102,7 +116,7 @@ public class Adminmenu {
         }
         if (temp==0)
           count = database.flights.remove(removeId);
-        if (count==0 && temp==0)///////////check
+        if (count==0 && temp==0)
             System.out.println("This Id wasn't found !\n");
         if (count!=0)
             System.out.println("This action was done successfully.\n");
@@ -110,7 +124,7 @@ public class Adminmenu {
         public void update(Database database){
             System.out.println("Please enter the flightId that you want to update :");
             String updateId = input.next();
-            int c=0;
+            int c=0,count=0,temp=0;
             for (int i=0;i<database.tickets.tickets.size();i++){
                 if (Objects.equals(database.tickets.tickets.get(i).getFlight().getFlightId(), updateId)){
                     System.out.println("You can't update this flight ; it has already booked.\n");
@@ -118,8 +132,6 @@ public class Adminmenu {
                     break;
                 }
             }
-            int count=0,temp=0;
-
             if (c==0) {
                 for (int k = 0; k < database.flights.info.size(); k++) {
                     if (Objects.equals(updateId, database.flights.info.get(k).getFlightId())) {
@@ -147,7 +159,7 @@ public class Adminmenu {
                                 while (bool) {
                                     System.out.println("Please enter new origin :  <enter the first letter in upper case>");
                                     newOrigin = input.next();
-                                    if (!Objects.equals(newOrigin, database.flights.info.get(k).getOrigin()) && database.isNumeric(newOrigin))
+                                    if (!Objects.equals(newOrigin, database.flights.info.get(k).getDestination()) && database.checkLetters(newOrigin))
                                         bool = false;
                                     else
                                         System.out.println("Not valid !");
@@ -160,7 +172,7 @@ public class Adminmenu {
                                 while (bool) {
                                     System.out.println("Please enter new Destination :   <enter the first letter in upper case>");
                                     newDestination = input.next();
-                                    if (!Objects.equals(newDestination, database.flights.info.get(k).getOrigin()) && database.isNumeric(newDestination))
+                                    if (!Objects.equals(newDestination, database.flights.info.get(k).getOrigin()) && database.checkLetters(newDestination))
                                         bool = false;
                                     else
                                         System.out.println("Not valid !");
@@ -168,38 +180,56 @@ public class Adminmenu {
                                 database.flights.update(k, newDestination, number);
                             }
                             case "4" -> {
-                                System.out.println("Please enter new Date :");
-                                String newDate = input.next();
+                                boolean bool = true;
+                                String newDate = null;
+                                while (bool) {
+                                    System.out.println("Please enter new Date :     <enter zero wherever required>");
+                                    newDate = input.next();
+                                    if (database.checkDate(newDate))
+                                        bool = false;
+                                    else
+                                        System.out.println("Not valid !");
+                                }
                                 database.flights.update(k, newDate, number);
                             }
                             case "5" -> {
-                                System.out.println("Please enter new Time :");
-                                String newTime = input.next();
+                                boolean bool = true;
+                                String newTime = null;
+                                while (bool) {
+                                    System.out.println("Please enter new Time :     <enter zero wherever required>");
+                                    newTime = input.next();
+                                    if (database.checkTime(newTime))
+                                        bool = false;
+                                    else
+                                        System.out.println("Not valid !");
+                                }
                                 database.flights.update(k, newTime, number);
                             }
                             case "6" -> {
                                 boolean bool = true;
+                                String newPrice = null;
                                 while (bool) {
                                     System.out.println("Please enter new Price :");
-                                    String newPrice = input.next();
-                                    if (database.isNumeric(newPrice) && Integer.parseInt(newPrice) > 0) {
-                                        database.flights.update(k, newPrice, number);
+                                    newPrice = input.next();
+                                    if (database.isNumeric(newPrice) && Integer.parseInt(newPrice) > 0)
                                         bool = false;
-                                    } else
+                                    else
                                         System.out.println("Not valid !");
                                 }
+                                database.flights.update(k, newPrice, number);
                             }
                             case "7" -> {
                                 boolean bool = true;
+                                String newSeats = null;
                                 while (bool) {
                                     System.out.println("Please enter new capacity for seats :");
-                                    String newSeats = input.next();
-                                    if (database.isNumeric(newSeats) && Integer.parseInt(newSeats) > 0) {
-                                        database.flights.update(k, newSeats, number);
+                                    newSeats = input.next();
+                                    if (database.isNumeric(newSeats) && Integer.parseInt(newSeats) > 0)
                                         bool = false;
-                                    } else
+                                    else
                                         System.out.println("Not valid !");
                                 }
+                                database.flights.update(k, newSeats, number);
                             }
                             default -> {
                                 System.out.println("This branch wasn't found !\n");
@@ -216,12 +246,11 @@ public class Adminmenu {
                 System.out.println("This Id wasn't found !\n");
         }
     public void showChart(Database database){
-        System.out.println("\t | FlightId | Origin | Destination | Date     |  Time  | Price    | Seats |");
+        System.out.println("| FlightId |    Origin     |  Destination  |    Date    | Time  |    Price   |  Seats |");
         for (int k=0 ; k< database.flights.info.size();k++) {
-            System.out.println("\n\t----------------------------------------------------------------------------");
-            System.out.println("\t | "+ database.flights.info.get(k).getFlightId() + "\t| "+ database.flights.info.get(k).getOrigin() + "\t | "+ database.flights.info.get(k).getDestination() + "\t  | "+ database.flights.info.get(k).getDate() + "\t| "+ database.flights.info.get(k).getTime() + " | "+database.flights.info.get(k).getPrice() + " | "+ database.flights.info.get(k).getSeat() + " | ");
+            System.out.print("---------------------------------------------------------------------------------------\n");
+            System.out.printf("|%-10s|%-15s|%-15s|%-12s|%-7s|%-12s|%-8s| %n",database.flights.info.get(k).getFlightId(),database.flights.info.get(k).getOrigin(),database.flights.info.get(k).getDestination(),database.flights.info.get(k).getDate(),database.flights.info.get(k).getTime(),database.flights.info.get(k).getPrice(),database.flights.info.get(k).getSeat());
         }
         System.out.println();
     }
 }
-

@@ -22,37 +22,28 @@ public class Tickets {
         i1++;
         return i1;
     }
-    public void bookTicket(String flightId,int j,Database database){
-        int count =0;
+    public int bookTicket(String flightId,int j,Database database){
         for (int k = 0; k < database.flights.info.size(); k++) {
             if (Objects.equals(flightId, database.flights.info.get(k).getFlightId())) {
-                count=1;
                 int emptySeat = Integer.parseInt(database.flights.info.get(k).getSeat());
-                if(emptySeat<=0){
-                    System.out.println("This flight has no seat.");
-                    break;
-                }
+                if(emptySeat<=0)
+                    return -1;
                 int newPrice = Integer.parseInt(database.flights.info.get(k).getPrice());
                 int newCharge = Integer.parseInt(database.passengers.information[j].getCredit());
-                if (newPrice>newCharge){
-                    System.out.println("You don't have enough charge.");
-                    break;
-                }
+                if (newPrice>newCharge)
+                    return -2;
                 int seat=Integer.parseInt(database.flights.info.get(k).getSeat());
                 seat--;
                 String newSeat = String.valueOf(seat);
                 database.flights.info.get(k).setSeat(newSeat);
                 int distance = Integer.parseInt(database.passengers.information[j].getCredit())-Integer.parseInt (database.flights.info.get(k).getPrice());
                 database.passengers.information[j].setCredit(String.valueOf(distance));
-                int i1=buyTicket(k,j,database);
-                System.out.println("Your ticketId is >> " + ticketArray[i1-1] + "\n");
-                break;
+                return buyTicket(k,j,database);
             }
         }
-        if (count==0)
-            System.out.println("This Id wasn't found.");
+       return 0;
     }
-    public void cancellation(String ticketId,int j,Database database){
+    public int cancellation(String ticketId,int j,Database database){
         int count=0;
         String flightId;
         for (int i = 0; i < database.tickets.tickets.size(); i++) {
@@ -68,13 +59,11 @@ public class Tickets {
                         database.flights.info.get(k).setSeat(newSeat);
                         int distance = Integer.parseInt(database.passengers.information[j].getCredit())+Integer.parseInt (database.flights.info.get(k).getPrice());
                         database.passengers.information[j].setCredit(String.valueOf(distance));
-                        System.out.println("This action was done successfully.\n");
                         break;
                     }
                 }
             }
         }
-        if (count==0)
-            System.out.println("This ticketId is invalid.");
+       return count;
     }
 }

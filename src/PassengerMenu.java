@@ -1,7 +1,7 @@
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Passengermenu {
+public class PassengerMenu {
     Scanner input = new Scanner(System.in);
     public void printMenu() {
         System.out.println("\t\t\t\t<<PASSENGER MENU OPTIONS>>\t\t");
@@ -21,10 +21,10 @@ public class Passengermenu {
             switch (command) {
                 case "1" -> changePassword(j,database);
                 case "2" -> search(database);
-                case "3" -> bookTicket(j,database);///j
-                case "4" -> cancellation(j,database);////pass j
-                case "5" -> bookedtickets(username,database); ////pass j
-                case "6" -> charge(j,database);////pass j
+                case "3" -> bookTicket(j,database);
+                case "4" -> cancellation(j,database);
+                case "5" -> bookedTickets(username,database);
+                case "6" -> charge(j,database);
                 default -> System.out.println("Not valid !\nPlease try again.");
             }
             printMenu();
@@ -32,10 +32,12 @@ public class Passengermenu {
         }
     }
     public void changePassword(int j,Database database) {
+        int count=0;
         System.out.println("Please enter your previous password: ");
         String previousPass = input.next();
-        for (int k = 0; k < j; k++) {
+        for (int k = 0; k <= j; k++) {
             if (Objects.equals(previousPass, database.passengers.information[k].getPassword())) {
+                count=1;
                 System.out.println("Please enter the new password:");
                 String newPassword1 = input.next();
                 System.out.println("Please enter the password again:");
@@ -54,6 +56,8 @@ public class Passengermenu {
                 break;
             }
         }
+        if (count==0)
+            System.out.println("Your previous password is wrong.\n");
     }
     public void charge(int j,Database database) {
         String price;
@@ -74,7 +78,13 @@ public class Passengermenu {
     public void bookTicket(int j,Database database) {
         System.out.println("Please enter the flightId that you want to book:");
         String flightId = input.next();
-        database.tickets.bookTicket(flightId,j,database);
+        int temp = database.tickets.bookTicket(flightId,j,database);
+        switch (temp) {
+            case 0 -> System.out.println("This Id wasn't found.");
+            case -1 -> System.out.println("This flight has no seat.");
+            case -2 -> System.out.println("You don't have enough charge.");
+            default -> System.out.println("Your ticketId is >> " + database.tickets.ticketArray[temp - 1] + "\n");
+        }
     }
     public void search(Database database) {
         System.out.println("Please enter your origin:    <enter the first letter in upper case>");
@@ -82,30 +92,39 @@ public class Passengermenu {
         System.out.println("Please enter your destination:    <enter the first letter in upper case>");
         String destination = input.next();
         int a = 0;
-        System.out.println("\n\t | FlightId | Origin | Destination | Date     |  Time  | Price    | Seats |");
+        System.out.println("| FlightId |    Origin     |  Destination  |    Date    | Time  |    Price   |  Seats |");
         for (int k = 0; k < database.flights.info.size(); k++) {
             if (Objects.equals(origin, database.flights.info.get(k).getOrigin()) && Objects.equals(destination, database.flights.info.get(k).getDestination())) {
-                System.out.println("\n\t----------------------------------------------------------------------------");
-                System.out.println("\t | " + database.flights.info.get(k).getFlightId() + "\t| " + database.flights.info.get(k).getOrigin() + "\t | " + database.flights.info.get(k).getDestination() + "\t  | " + database.flights.info.get(k).getDate() + "\t| " + database.flights.info.get(k).getTime() + " | " + database.flights.info.get(k).getPrice() + " | " + database.flights.info.get(k).getSeat() + " | ");
+                System.out.print("---------------------------------------------------------------------------------------\n");
+                System.out.printf("|%-10s|%-15s|%-15s|%-12s|%-7s|%-12s|%-8s| %n",database.flights.info.get(k).getFlightId(),database.flights.info.get(k).getOrigin(),database.flights.info.get(k).getDestination(),database.flights.info.get(k).getDate(),database.flights.info.get(k).getTime(),database.flights.info.get(k).getPrice(),database.flights.info.get(k).getSeat());
                 a = 1;
             }
         }
         System.out.println();
         if (a == 0)
-            System.out.println("There isn't any flight with these specifications.");
+            System.out.println("There isn't any flights with these specifications.\n");
     }
-    public void bookedtickets(String username,Database database){
-        System.out.println("\t | TicketId | FlightId | Origin | Destination | Date     |  Time  | Price    | Seats |");
+    public void bookedTickets(String username, Database database){
+        int count=0;
+        System.out.println("| TicketId | FlightId |    Origin     |  Destination  |    Date    | Time  |    Price   |  Seats |");
         for (int i=0;i<database.tickets.tickets.size();i++){
             if(Objects.equals(database.tickets.tickets.get(i).getPassengers().getUsername(), username)){
-                System.out.println("\n\t----------------------------------------------------------------------------");
-                System.out.println( " \t\t"+database.tickets.tickets.get(i).getTicketId()+"\t\t\t|"+database.tickets.tickets.get(i).getFlight().getFlightId()+"\t\t|"+database.tickets.tickets.get(i).getFlight().getOrigin()+"\t\t|   "+database.tickets.tickets.get(i).getFlight().getDestination()+"\t\t|"+database.tickets.tickets.get(i).getFlight().getDate()+"\t\t|"+database.tickets.tickets.get(i).getFlight().getTime()+"\t\t|"+database.tickets.tickets.get(i).getFlight().getPrice()+"\t\t|"+database.tickets.tickets.get(i).getFlight().getSeat()+"  |");
+                System.out.print("--------------------------------------------------------------------------------------------------\n");
+                System.out.printf( "|%-10s|%-10s|%-15s|%-15s|%-12s|%-7s|%-12s|%-8s| %n",database.tickets.tickets.get(i).getTicketId(),database.tickets.tickets.get(i).getFlight().getFlightId(),database.tickets.tickets.get(i).getFlight().getOrigin(),database.tickets.tickets.get(i).getFlight().getDestination(),database.tickets.tickets.get(i).getFlight().getDate(),database.tickets.tickets.get(i).getFlight().getTime(),database.tickets.tickets.get(i).getFlight().getPrice(),database.tickets.tickets.get(i).getFlight().getSeat());
+                count=1;
             }
         }
+        System.out.println();
+        if (count==0)
+            System.out.println("You don't reserve any flights.\n");
     }
     public void cancellation(int j,Database database){
         System.out.println("Please enter the ticketId to cancel your reservation :");
         String ticketId = input.next();
-        database.tickets.cancellation(ticketId,j,database);
+        int temp =database.tickets.cancellation(ticketId,j,database);
+        if (temp == 1)
+            System.out.println("This action was done successfully.\n");
+        if (temp == 0)
+            System.out.println("This ticketId is invalid.");
     }
 }

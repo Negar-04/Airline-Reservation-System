@@ -5,12 +5,14 @@ public class Passengers {
     }
 
     public void changePassword(int j, String newPass){
+
         information[j].setPassword(newPass);
+
     }
-    public void addCharge(int k , String price){
-        int preCharge = Integer.parseInt(information[k].getCredit());
+    public void addCharge(int j , String price){
+        int preCharge = Integer.parseInt(information[j].getCredit());
         int newPrice = Integer.parseInt(price);
         int sum = preCharge + newPrice;
-        information[k].setCredit(String.valueOf(sum));
+        information[j].setCredit(String.valueOf(sum));
     }
 }

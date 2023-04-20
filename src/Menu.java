@@ -2,8 +2,8 @@ import java.util.Objects;
 import java.util.Scanner;
 public class Menu {
     Scanner input = new Scanner(System.in);
-    Adminmenu adminmenu = new Adminmenu();
-    Passengermenu passengermenu = new Passengermenu();
+    AdminMenu adminmenu = new AdminMenu();
+    PassengerMenu passengermenu = new PassengerMenu();
     int j=0;
 
     public void startMenu(Database database) {
@@ -13,12 +13,11 @@ public class Menu {
         System.out.println("<1> Sign in");
         System.out.println("<2> Sign up");
         System.out.println("<3> Exit");
-
         String command = input.next();
         while (!Objects.equals(command, "3")) {
             switch (command) {
-                case "1" -> signin(database);
-                case "2" -> signup(database);
+                case "1" -> signIn(database);
+                case "2" -> signUp(database);
                 default -> System.out.println("Not valid !\nPlease try again.");
             }
             System.out.println("\t\t\t\t\t\t <<MENU OPTIONS>>\t\t\t\n");
@@ -29,7 +28,7 @@ public class Menu {
             command = input.next();
         }
     }
-    public void signup(Database database){
+    public void signUp(Database database){
         System.out.println("Please enter username:");
         String username = input.next();
         int a=1;
@@ -48,8 +47,7 @@ public class Menu {
         database.passengers.information[j++] = new Passenger(username,password,"0");
     }
     int temp=0;
-    public void signin(Database database){
-
+    public void signIn(Database database){
         if (temp==0)
             database.flights.defaultInfo();
         temp=1;

@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Admins {
-    ArrayList <Admin> admins ;
+    ArrayList<Admin> admins;
 
     public Admins() {
-        this.admins = new ArrayList<>() ;
-        admins.add(0,new Admin("negar","negar1383"));
+        this.admins = new ArrayList<>();
+        admins.add(0, new Admin());
     }
 }

@@ -7,51 +7,77 @@ public class Database {
     Flights flights = new Flights();
     Tickets tickets = new Tickets();
 
+    /**
+     * check and accept just numbers
+     *
+     * @param str it's string that entered from admin to add into flight's information
+     * @return false if the format is invalid or true if it's valid
+     */
     public boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
             return true;
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
-    public boolean checkLetters(String str){
+
+    /**
+     * check the correct format of origin and destination that should be capitalized in first letter
+     *
+     * @param str it's origin or destination that entered from admin
+     * @return false if the format is invalid or true if it's valid
+     */
+    public boolean checkLetters(String str) {
         boolean test;
         char[] str2 = str.toCharArray();
-        if (str2[0]>= 'a' && str2[0]<= 'z')
+
+        if (str2[0] >= 'a' && str2[0] <= 'z')
             return false;
+
         for (int i = 1; i < str.length(); i++) {
-            if ((str2[i] >= 'a' && str2[i] <= 'z'))
-                test = true;
-            else
-                test = false;
+            test = str2[i] >= 'a' && str2[i] <= 'z';
             if (!test)
                 return false;
         }
         return true;
     }
-    public boolean checkTime(String str){
+
+    /**
+     * check the correct format of time
+     *
+     * @param str it's time that entered from admin
+     * @return false if the format is invalid or true if it's valid
+     */
+    public boolean checkTime(String str) {
+
         Matcher matcher = Pattern.compile("\\d{2}:\\d{2}").matcher(str);
-        matcher.useAnchoringBounds(true);
-        if (matcher.find()){
+
+        if (matcher.find()) {
             String[] digits = str.split(":");
             int[] convertedDigits = new int[digits.length];
 
             for (int i = 0; i < digits.length; i++)
                 convertedDigits[i] = Integer.parseInt(digits[i]);
 
-            boolean hourCheck = convertedDigits[0] >=0 && convertedDigits[0] <=23;
-            boolean minuteCheck = convertedDigits[1] >=0 && convertedDigits[1] <=59;
+            boolean hourCheck = convertedDigits[0] >= 0 && convertedDigits[0] <= 23;
+            boolean minuteCheck = convertedDigits[1] >= 0 && convertedDigits[1] <= 59;
 
             return hourCheck && minuteCheck;
         }
         return false;
     }
-    public boolean checkDate(String str){
+
+    /**
+     * check the correct format of date
+     *
+     * @param str it's date that entered from admin
+     * @return false if the format is invalid or true if it's valid
+     */
+    public boolean checkDate(String str) {
 
         Matcher matcher = Pattern.compile("\\d{4}/\\d{2}/\\d{2}").matcher(str);
 
-        matcher.useAnchoringBounds(true);
         if (matcher.find()) {
             String[] digits = str.split("/");
             int[] convertedDigits = new int[digits.length];
@@ -59,16 +85,16 @@ public class Database {
             for (int i = 0; i < digits.length; i++)
                 convertedDigits[i] = Integer.parseInt(digits[i]);
 
-            boolean yearCheck = convertedDigits[0] > 0 && convertedDigits[0] <10000;
+            boolean yearCheck = convertedDigits[0] > 0 && convertedDigits[0] < 10000;
             boolean monthCheck = convertedDigits[1] > 0 && convertedDigits[1] < 13;
             boolean dayCheck;
 
-            if (convertedDigits[1] > 0 && convertedDigits[1] <=6)
-                dayCheck = convertedDigits[2] > 0 && convertedDigits[2] <=32;
+            if (convertedDigits[1] > 0 && convertedDigits[1] <= 6)
+                dayCheck = convertedDigits[2] > 0 && convertedDigits[2] <= 32;
             else if (convertedDigits[1] == 12)
-                dayCheck = convertedDigits[2] >0 && convertedDigits[2] <=29;
+                dayCheck = convertedDigits[2] > 0 && convertedDigits[2] <= 29;
             else
-                dayCheck = convertedDigits[2] >0 && convertedDigits[2] <=30;
+                dayCheck = convertedDigits[2] > 0 && convertedDigits[2] <= 30;
 
             return monthCheck && dayCheck && yearCheck;
 
